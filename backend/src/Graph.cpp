@@ -1,6 +1,8 @@
 
 #include "Graph.h"
 
+using namespace std;
+
 bool Graph::addSubstation(const Substation& s) {
     if (s.id < 0 || s.name.empty() || s.loadDemand < 0) {
         return false;
@@ -22,6 +24,7 @@ double Graph::calculateConstructionCost(
     double terrainFactor
 ) const {
     const double BASE_COST_PER_KM = 10.0;
+
     return distance * terrainFactor * BASE_COST_PER_KM;
 }
 
@@ -41,7 +44,7 @@ bool Graph::addLine(const TransmissionLine& inputLine) {
             return false;
         }
 
-        // Reject the same undirected connection in either direction.
+        // Reject duplicate undirected connections.
         if ((existing.from == inputLine.from &&
              existing.to == inputLine.to) ||
             (existing.from == inputLine.to &&
@@ -59,6 +62,7 @@ bool Graph::addLine(const TransmissionLine& inputLine) {
 
     lines.push_back(line);
 
+    // Add both directions because the graph is undirected.
     adjacency[line.from].push_back({line.to, line.id});
     adjacency[line.to].push_back({line.from, line.id});
 
@@ -73,15 +77,15 @@ int Graph::edgeCount() const {
     return static_cast<int>(lines.size());
 }
 
-const std::vector<Substation>& Graph::getSubstations() const {
+const vector<Substation>& Graph::getSubstations() const {
     return substations;
 }
 
-const std::vector<TransmissionLine>& Graph::getLines() const {
+const vector<TransmissionLine>& Graph::getLines() const {
     return lines;
 }
 
-const std::unordered_map<int, std::vector<std::pair<int, int>>>&
+const unordered_map<int, vector<pair<int, int>>>&
 Graph::getAdjacencyList() const {
     return adjacency;
 }
