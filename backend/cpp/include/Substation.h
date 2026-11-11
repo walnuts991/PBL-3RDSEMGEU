@@ -1,39 +1,35 @@
-
 #ifndef SUBSTATION_H
 #define SUBSTATION_H
 
-#include "GridComponent.h"
+#include "Gridcomponent.h"
+#include <string>
 
 class Substation : public GridComponent {
 private:
-    string name;
-    double loadDemand;
+    std::string name;
+    double x;
+    double y;
+    std::string type;       // "generator", "load", or "both"
+    double supplyMW;
+    double demandMW;
 
 public:
-    Substation(int id, const string& name, double loadDemand);
+    // Backward-compatible constructor used by the original project.
+    Substation(int id, const std::string& name, double loadDemand);
 
-    string getName() const;
-    double getLoadDemand() const;
+    // Extended constructor for the complete GridGuard data model.
+    Substation(int id, const std::string& name,
+               double x, double y, const std::string& type,
+               double supplyMW, double demandMW);
 
-    void display() const override;
-};
+    const std::string& getName() const;
+    double getX() const;
+    double getY() const;
+    const std::string& getType() const;
+    double getSupplyMW() const;
+    double getDemandMW() const;
 
-#endif
-
-#ifndef SUBSTATION_H
-#define SUBSTATION_H
-
-#include "GridComponent.h"
-
-class Substation : public GridComponent {
-private:
-    string name;
-    double loadDemand;
-
-public:
-    Substation(int id, const string& name, double loadDemand);
-
-    string getName() const;
+    // Backward-compatible name retained for existing code.
     double getLoadDemand() const;
 
     void display() const override;
