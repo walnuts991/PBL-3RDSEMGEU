@@ -1,112 +1,287 @@
-
 #include "Graph.h"
-#include "../include/FaultTolerance.h"
+#include "MST.h"
+#include "faulttolerance.h"
+
 #include <iostream>
+#include <vector>
+#include <iomanip>
+
 using namespace std;
 
-int main() {
-    Graph grid;
 
-    cout << "=== GridGuard: Module 1 ===\n";
+// ============================================
+// DISPLAY MST RESULTS
+// ============================================
 
-    grid.addSubstation(Substation(1, "North", 100));
-    grid.addSubstation(Substation(2, "Central", 150));
-    grid.addSubstation(Substation(3, "South", 120));
+void displayMSTResult(const MSTResult& result,
+                      const string& algorithmName) {
 
-    // Test duplicate substation ID.
-    cout << "Duplicate substation test: "
-         << (grid.addSubstation(
-                 Substation(1, "Duplicate", 50))
-                 ? "FAIL" : "PASS") << '\n';
+    cout << "\n--- " << algorithmName << " ---\n";
 
-    grid.addLine(TransmissionLine(1, 1, 2, 10, 1.2, 100));
-    grid.addLine(TransmissionLine(2, 2, 3, 15, 1.0, 120));
-    grid.addLine(TransmissionLine(3, 1, 3, 20, 1.5, 80));
+    for (const auto& edge : result.selectedEdges) {
 
-    // Test duplicate connection.
-    cout << "Duplicate line test: "
-         << (grid.addLine(
-                 TransmissionLine(4, 2, 1, 12, 1.0, 90))
-                 ? "FAIL" : "PASS") << '\n';
-
-    grid.display();
-
-    if (grid.saveForAlgorithms("../../data/grid.txt")) {
-        cout << "\nGrid data saved to data/grid.txt\n";
-    } else {
-        cout << "\nCould not save grid data. Check the data folder.\n";
+        cout << "Line " << edge.lineId
+             << ": " << edge.fromId
+             << " - " << edge.toId
+             << " | Cost: " << edge.cost << '\n';
     }
 
-    // ==============================
+    cout << "Total Construction Cost: "
+         << result.totalCost << '\n';
+
+    cout << "Connected Components: "
+         << result.componentCount << '\n';
+
+    if (result.isSpanningTree) {
+        cout << "Result: Minimum Spanning Tree\n";
+    }
+    else {
+        cout << "Result: Minimum Spanning Forest\n";
+    }
+}
+
+
+// ============================================
+// MAIN FUNCTION
+// ============================================
+
+int main() {
+
+    cout << fixed << setprecision(2);
+
+    // ========================================
+    // MODULE 1: GRAPH CREATION
+    // ========================================
+
+    cout << "\n========== GRIDGUARD ==========\n";
+    cout << "\n=== MODULE 1: GRAPH CREATION ===\n";
+
+    Graph grid;
+
+    // Create substations.
+    grid.addSubstation(
+        Substation(1, "North", 0, 0, "generator", 200, 0)
+    );
+
+    grid.addSubstation(
+        Substation(2, "Central", 5, 2, "load", 0, 100)
+    );
+
+    grid.addSubstation(
+        Substation(3, "South", 8, 5, "load", 0, 80)
+    );
+
+    grid.addSubstation(
+        Substation(4, "East", 12, 3, "load", 0, 60)
+    );
+
+
+    // Test duplicate substation ID.
+    cout << "\nDuplicate Substation Test: ";
+
+    if (!grid.addSubstation(
+            Substation(1, "Duplicate", 0, 0, "load", 0, 50))) {
+
+        cout << "PASS\n";
+    }
+    else {
+        cout << "FAIL\n";
+    }
+
+
+    // Add transmission lines.
+    grid.addLine(
+        TransmissionLine(1, 1, 2, 10, 1.2, 100)
+    );
+
+    grid.addLine(
+        TransmissionLine(2, 2, 3, 15, 1.0, 120)
+    );
+
+    grid.addLine(
+        TransmissionLine(3, 1, 3, 20, 1.5, 80)
+    );
+
+    grid.addLine(
+        TransmissionLine(4, 3, 4, 8, 1.0, 90)
+    );
+
+
+    // Test duplicate connection.
+    cout << "Duplicate Transmission Line Test: ";
+
+    if (!grid.addLine(
+            TransmissionLine(5, 2, 1, 12, 1.0, 90))) {
+
+        cout << "PASS\n";
+    }
+    else {
+        cout << "FAIL\n";
+    }
+
+
+    // Display graph.
+    grid.display();
+
+
+    // Save graph data.
+    if (grid.saveForAlgorithms("../../data/grid.txt")) {
+        cout << "\nGrid data saved successfully.\n";
+    }
+    else {
+        cout << "\nCould not save grid data.\n";
+    }
+
+
+    // ========================================
+    // MODULE 2: MINIMUM SPANNING TREE
+    // ========================================
+
+    cout << "\n=== MODULE 2: MINIMUM COST NETWORK ===\n";
+
+    // Kruskal's Algorithm.
+    MSTResult kruskalResult = MST::kruskal(grid);
+
+    displayMSTResult(
+        kruskalResult,
+        "KRUSKAL'S ALGORITHM"
+    );
+
+
+    // Prim's Algorithm.
+    MSTResult primResult = MST::prim(grid);
+
+    displayMSTResult(
+        primResult,
+        "PRIM'S ALGORITHM"
+    );
+
+
+    // ========================================
     // MODULE 3: FAULT TOLERANCE
-    // AND BUDGET OPTIMIZATION
-    // ==============================
+    // ========================================
 
-    cout << "\n=== GridGuard: Module 3 ===\n";
+    cout << "\n=== MODULE 3: FAULT TOLERANCE ===\n";
 
-    // Create edges from the existing network
-    vector<FT_Edge> edges = {
-        {0, 1, 10},
-        {1, 2, 15},
-        {0, 2, 20}
-    };
+    FaultTolerance faultNetwork(grid);
 
-    FaultTolerance faultNetwork(3, edges);
 
-    // 1. Find bridges / vulnerable connections
-    vector<FT_Edge> bridges =
-        faultNetwork.findBridges();
+    // ----------------------------------------
+    // 1. BRIDGE DETECTION
+    // ----------------------------------------
 
-    cout << "\n--- Vulnerable / Bridge Connections ---\n";
+    cout << "\n--- Critical Transmission Lines ---\n";
+
+    vector<int> bridges = faultNetwork.findBridges();
 
     if (bridges.empty()) {
+
         cout << "No bridge connections found.\n";
-    } else {
-        for (const auto& edge : bridges) {
-            cout << "Connection: "
-                 << edge.u << " - " << edge.v
-                 << " | Cost: " << edge.cost << '\n';
+    }
+    else {
+
+        for (int lineId : bridges) {
+
+            cout << "Critical Line ID: "
+                 << lineId << '\n';
         }
     }
 
-    // 2. Test failure of every single edge
+
+    // ----------------------------------------
+    // 2. SINGLE EDGE FAILURE TEST
+    // ----------------------------------------
+
+    cout << "\n--- Single Transmission Line Failure Test ---\n";
+
     vector<FailureResult> failures =
         faultNetwork.testSingleEdgeFailures();
 
-    cout << "\n--- Single Edge Failure Test ---\n";
-
     for (const auto& result : failures) {
-        cout << "Edge " << result.edgeIndex << ": ";
 
-        if (result.networkConnected) {
-            cout << "Network remains CONNECTED\n";
-        } else {
-            cout << "Network FAILURE\n";
+        cout << "Line " << result.lineId << ": ";
+
+        if (result.networkRemainsConnected) {
+
+            cout << "Network remains connected\n";
+        }
+        else {
+
+            cout << "NETWORK DISCONNECTED\n";
+        }
+
+        cout << "Components after failure: "
+             << result.componentsAfterRemoval << '\n';
+    }
+
+
+    // ----------------------------------------
+    // 3. BUDGET-BASED NETWORK AUGMENTATION
+    // ----------------------------------------
+
+    cout << "\n--- Budget-Based Network Augmentation ---\n";
+
+    // Proposed additional transmission lines.
+    // These are candidate links, not existing lines.
+
+    vector<FT_Edge> candidates = {
+
+        {5, 4, 1, 50.0},
+        {6, 4, 2, 60.0}
+    };
+
+    double budget = 100.0;
+
+    AugmentationResult augmentation =
+        faultNetwork.optimizeBudget(candidates, budget);
+
+
+    cout << "Available Budget: "
+         << budget << '\n';
+
+    cout << "Initial Bridge Count: "
+         << augmentation.initialBridgeCount << '\n';
+
+
+    cout << "\nSelected Additional Links:\n";
+
+    if (augmentation.selectedLinks.empty()) {
+
+        cout << "No additional links selected.\n";
+    }
+    else {
+
+        for (const auto& link : augmentation.selectedLinks) {
+
+            cout << "Line " << link.id
+                 << ": " << link.fromId
+                 << " - " << link.toId
+                 << " | Cost: " << link.cost << '\n';
         }
     }
 
-    // 3. Test additional links within budget
-    vector<ExtraLink> extraLinks = {
-        {0, 2, 25},
-        {1, 3, 30},
-        {0, 3, 20}
-    };
 
-    int budget = 50;
+    cout << "\nBudget Used: "
+         << augmentation.budgetUsed << '\n';
 
-    vector<ExtraLink> selectedLinks =
-        faultNetwork.optimizeBudget(extraLinks, budget);
+    cout << "Remaining Budget: "
+         << augmentation.budgetRemaining << '\n';
 
-    cout << "\n--- Budget Optimization ---\n";
-    cout << "Available Budget: " << budget << '\n';
+    cout << "Final Bridge Count: "
+         << augmentation.finalBridgeCount << '\n';
 
-    for (const auto& link : selectedLinks) {
-        cout << "Additional Link: "
-             << link.u << " - " << link.v
-             << " | Cost: " << link.cost << '\n';
-    }
 
-    cout << "\nModule 3 completed successfully.\n";
+    // ----------------------------------------
+    // FINAL STATUS
+    // ----------------------------------------
+
+    cout << "\n========== GRIDGUARD SUMMARY ==========\n";
+
+    cout << "Module 1: Graph Creation Executed\n";
+    cout << "Module 2: Kruskal and Prim Executed\n";
+    cout << "Module 3: Fault Tolerance Executed\n";
+
+    cout << "\nGridGuard execution completed.\n";
 
     return 0;
 }
