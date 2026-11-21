@@ -1,8 +1,7 @@
-
 #ifndef TRANSMISSION_LINE_H
 #define TRANSMISSION_LINE_H
 
-#include "GridComponent.h"
+#include "Gridcomponent.h"
 
 class TransmissionLine : public GridComponent {
 private:
@@ -10,19 +9,20 @@ private:
     int to;
     double distance;
     double terrainFactor;
-    double capacity;
+    double capacityMW;
     double constructionCost;
 
 public:
-    TransmissionLine(
-        int id, int from, int to,
-        double distance, double terrainFactor, double capacity
-    );
+    // Retains the original constructor and cost formula.
+    TransmissionLine(int id, int from, int to,
+                     double distance, double terrainFactor, double capacity);
 
     int getFrom() const;
     int getTo() const;
     double getDistance() const;
+    double getTerrainFactor() const;
     double getCapacity() const;
+    double getCapacityMW() const;
     double getConstructionCost() const;
 
     void display() const override;
