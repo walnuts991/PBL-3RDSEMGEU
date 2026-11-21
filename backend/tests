@@ -1,0 +1,134 @@
+#include "ShortestPath.h"
+#include "MaxFlow.h"
+
+#include <cassert>
+#include <cmath>
+#include <iostream>
+
+bool approximatelyEqual(double a, double b) {
+    return std::abs(a - b) < 1e-9;
+}
+
+int main() {
+
+    // ==========================================
+    // CREATE TEST POWER GRID
+    // ==========================================
+
+    Graph graph;
+
+    assert(graph.addSubstation(
+        Substation(10, "Generator", 0, 0,
+                   "generator", 100, 0)
+    ));
+
+    assert(graph.addSubstation(
+        Substation(20, "Load A", 5, 0,
+                   "load", 0, 40)
+    ));
+
+    assert(graph.addSubstation(
+        Substation(30, "Load B", 0, 6,
+                   "load", 0, 50)
+    ));
+
+    assert(graph.addSubstation(
+        Substation(40, "Load C", 8, 0,
+                   "load", 0, 10)
+    ));
+
+    // Distance, terrain factor, capacity.
+    assert(graph.addLine(
+        TransmissionLine(1, 10, 20, 5, 1.0, 50)
+    ));
+
+    assert(graph.addLine(
+        TransmissionLine(2, 10, 30, 6, 1.0, 40)
+    ));
+
+    assert(graph.addLine(
+        TransmissionLine(3, 20, 40, 3, 1.0, 30)
+    ));
+
+    assert(graph.addLine(
+        TransmissionLine(4, 30, 40, 3, 1.0, 30)
+    ));
+
+    // ==========================================
+    // TEST 1: DIJKSTRA SHORTEST PATH
+    // ==========================================
+
+    ShortestPathResult route =
+        ShortestPath::dijkstra(graph, 10, 40);
+
+    assert(route.pathFound);
+
+    assert(approximatelyEqual(
+        route.totalDistance, 8.0
+    ));
+
+    assert(route.path.size() == 3);
+
+    assert(route.path[0] == 10);
+    assert(route.path[1] == 20);
+    assert(route.path[2] == 40);
+
+    // Test source equals destination.
+    ShortestPathResult sameStation =
+        ShortestPath::dijkstra(graph, 10, 10);
+
+    assert(sameStation.pathFound);
+    assert(approximatelyEqual(
+        sameStation.totalDistance, 0.0
+    ));
+
+    // ==========================================
+    // TEST 2: EDMONDS-KARP MAXIMUM FLOW
+    // ==========================================
+
+    MaxFlowResult flow =
+        MaxFlow::edmondsKarp(graph);
+
+    // Maximum possible transfer is 90 MW.
+    assert(approximatelyEqual(
+        flow.maximumFlowMW, 90.0
+    ));
+
+    // The final minimum cut should contain
+    // at least one transmission line.
+    assert(!flow.bottleneckLineIds.empty());
+
+    // ==========================================
+    // DISPLAY RESULTS
+    // ==========================================
+
+    std::cout << "--- DIJKSTRA SHORTEST PATH ---\n";
+
+    for (std::size_t i = 0; i < route.path.size(); i++) {
+
+        std::cout << route.path[i];
+
+        if (i + 1 < route.path.size()) {
+            std::cout << " -> ";
+        }
+    }
+
+    std::cout << "\nTotal Distance: "
+              << route.totalDistance << " km\n";
+
+
+    std::cout << "\n--- EDMONDS-KARP MAXIMUM FLOW ---\n";
+
+    std::cout << "Maximum Transferable Power: "
+              << flow.maximumFlowMW << " MW\n";
+
+    std::cout << "Minimum Cut Transmission Lines:\n";
+
+    for (int lineId : flow.bottleneckLineIds) {
+        std::cout << "Line ID: " << lineId << '\n';
+    }
+
+    std::cout << "\nModule 4 tests passed!\n";
+
+    return 0;
+}

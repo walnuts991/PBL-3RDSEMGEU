@@ -5,10 +5,30 @@ using namespace std;
 
 Substation::Substation(
     int id, const string& name, double loadDemand
-) : GridComponent(id), name(name), loadDemand(loadDemand) {}
+) : Substation(id, name, 0.0, 0.0, "", 0.0, loadDemand) {}
+
+Substation::Substation(
+    int id,
+    const string& name,
+    double x,
+    double y,
+    const string& type,
+    double generationMW,
+    double loadDemand
+) : GridComponent(id),
+    name(name),
+    x(x),
+    y(y),
+    type(type),
+    generationMW(generationMW),
+    loadDemand(loadDemand) {}
 
 string Substation::getName() const {
     return name;
+}
+
+double Substation::getGenerationMW() const {
+    return generationMW;
 }
 
 double Substation::getLoadDemand() const {

@@ -1,6 +1,6 @@
 
 #include "Graph.h"
-#include "../include/FaultTolerance.h"
+#include "../include/faulttolerance.h"
 #include <iostream>
 using namespace std;
 

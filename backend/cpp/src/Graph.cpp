@@ -1,9 +1,17 @@
-
 #include "Graph.h"
 #include <fstream>
 #include <iostream>
-#include <unordered_set>
+
 using namespace std;
+
+bool Graph::hasSubstationId(int id) const {
+    for (const auto& s : substations) {
+        if (s.getId() == id) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool Graph::addSubstation(const Substation& s) {
     if (s.getId() < 0 || s.getName().empty() ||
@@ -11,10 +19,8 @@ bool Graph::addSubstation(const Substation& s) {
         return false;
     }
 
-    for (const auto& existing : substations) {
-        if (existing.getId() == s.getId()) {
-            return false;
-        }
+    if (hasSubstationId(s.getId())) {
+        return false;
     }
 
     substations.push_back(s);
@@ -30,18 +36,15 @@ bool Graph::addLine(const TransmissionLine& line) {
         return false;
     }
 
-    bool fromExists = false;
-    bool toExists = false;
-
-    for (const auto& s : substations) {
-        if (s.getId() == line.getFrom()) fromExists = true;
-        if (s.getId() == line.getTo()) toExists = true;
+    if (!hasSubstationId(line.getFrom()) ||
+        !hasSubstationId(line.getTo())) {
+        return false;
     }
 
-    if (!fromExists || !toExists) return false;
-
     for (const auto& existing : lines) {
-        if (existing.getId() == line.getId()) return false;
+        if (existing.getId() == line.getId()) {
+            return false;
+        }
 
         if ((existing.getFrom() == line.getFrom() &&
              existing.getTo() == line.getTo()) ||
@@ -57,11 +60,13 @@ bool Graph::addLine(const TransmissionLine& line) {
 
 void Graph::display() const {
     cout << "\n--- Substations ---\n";
+
     for (const auto& s : substations) {
         s.display();
     }
 
     cout << "\n--- Transmission Lines ---\n";
+
     for (const auto& line : lines) {
         line.display();
     }
@@ -78,11 +83,41 @@ int Graph::edgeCount() const {
     return static_cast<int>(lines.size());
 }
 
-// File format: vertex count, vertices, edge count, edges.
+const vector<Substation>& Graph::getSubstations() const {
+    return substations;
+}
+
+const vector<TransmissionLine>& Graph::getLines() const {
+    return lines;
+}
+
+bool Graph::getSubstationIndex(int substationId, int& index) const {
+    for (int i = 0; i < static_cast<int>(substations.size()); i++) {
+        if (substations[i].getId() == substationId) {
+            index = i;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const Substation* Graph::findSubstation(int substationId) const {
+    for (const auto& substation : substations) {
+        if (substation.getId() == substationId) {
+            return &substation;
+        }
+    }
+
+    return nullptr;
+}
+
 bool Graph::saveForAlgorithms(const string& filename) const {
     ofstream file(filename);
 
-    if (!file) return false;
+    if (!file) {
+        return false;
+    }
 
     file << substations.size() << '\n';
 
