@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 
+// Test handling of an invalid vertex index.
 bool closeEnough(double a, double b) {
     return std::abs(a - b) < 1e-9;
 }
@@ -30,7 +31,7 @@ int main() {
 
     assert(dsu.getComponentCount() == 3);
 
-
+    // TEST 1B: INVALID DSU INDEX
     // =====================================
     // TEST 2: CONNECTED GRAPH
     // =====================================

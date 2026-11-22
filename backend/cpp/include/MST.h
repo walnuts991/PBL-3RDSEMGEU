@@ -6,6 +6,7 @@
 #include <vector>
 
 // Stores information about one selected transmission line.
+// Represents an edge selected for the MST.
 struct MSTEdge {
     int lineId;
     int fromId;
@@ -14,6 +15,7 @@ struct MSTEdge {
 };
 
 // Stores the complete result of an MST algorithm.
+// Stores the MST output and its total cost.
 struct MSTResult {
     std::vector<MSTEdge> selectedEdges;
     double totalCost = 0.0;

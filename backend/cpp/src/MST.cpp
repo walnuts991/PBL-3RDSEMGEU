@@ -90,7 +90,7 @@ MSTResult MST::kruskal(const Graph& graph) {
             if (a.edge.cost != b.edge.cost) {
                 return a.edge.cost < b.edge.cost;
             }
-
+            // Use line ID to break ties between equal-cost edges.
             return a.edge.lineId < b.edge.lineId;
         }
     );
@@ -188,7 +188,7 @@ MSTResult MST::prim(const Graph& graph) {
         if (visited[start]) {
             continue;
         }
-
+        // Count a new connected component.
         components++;
         visited[start] = true;
 

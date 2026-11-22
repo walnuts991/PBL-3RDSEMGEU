@@ -3,7 +3,7 @@
 #define DSU_H
 
 #include <vector>
-
+// Manages disjoint sets of vertices.
 class DSU {
 private:
     std::vector<int> parent;
