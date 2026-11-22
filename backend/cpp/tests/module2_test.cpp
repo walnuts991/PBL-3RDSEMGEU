@@ -30,7 +30,7 @@ int main() {
 
     assert(dsu.getComponentCount() == 3);
 
-
+    // TEST 1B: INVALID DSU INDEX
     // =====================================
     // TEST 2: CONNECTED GRAPH
     // =====================================
