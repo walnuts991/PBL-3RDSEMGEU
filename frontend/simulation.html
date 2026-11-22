@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GridGuard | Power Grid Control Center</title>
+
+    <link rel="stylesheet" href="simulation.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="topbar">
+
+    <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div>
+            <h1>GRIDGUARD</h1>
+            <p>POWER GRID CONTROL CENTER</p>
+        </div>
+    </div>
+
+    <div class="system-status">
+        <span class="online-dot"></span>
+        SYSTEM ONLINE
+    </div>
+
+    <a href="index.html" class="dashboard-link">
+        ← Dashboard
+    </a>
+
+</header>
+
+
+<main class="dashboard">
+
+    <!-- TOP STATISTICS -->
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <p>GRID FREQUENCY</p>
+            <h2 id="frequency">50.00 <small>Hz</small></h2>
+            <span class="green-text">● Stable frequency</span>
+        </article>
+
+        <article class="stat-card">
+            <p>TOTAL LOAD</p>
+            <h2 id="total-load">240 <small>MW</small></h2>
+            <span>Current network demand</span>
+        </article>
+
+        <article class="stat-card">
+            <p>ACTIVE SUBSTATIONS</p>
+            <h2 id="station-count">5</h2>
+            <span>Connected substations</span>
+        </article>
+
+        <article class="stat-card">
+            <p>ACTIVE OUTAGES</p>
+            <h2 id="failed-lines">0</h2>
+            <span class="green-text" id="outage-status">
+                No active faults
+            </span>
+        </article>
+
+        <article class="stat-card">
+            <p>NETWORK HEALTH</p>
+            <h2 id="network-health">100<small>%</small></h2>
+            <span>Network availability</span>
+        </article>
+
+        <article class="stat-card">
+            <p>POWER FLOW</p>
+            <h2 id="power-flow">180 <small>MW</small></h2>
+            <span>Initial illustrative value</span>
+        </article>
+
+    </section>
+
+
+    <!-- MAIN THREE-COLUMN LAYOUT -->
+    <section class="main-grid">
+
+
+        <!-- LEFT PANEL -->
+        <aside class="side-panel station-panel">
+
+            <div class="section-heading">
+                <h3>SUBSTATION STATUS</h3>
+                <span class="live-label">LIVE</span>
+            </div>
+
+            <div id="station-list">
+
+                <div class="station-item">
+                    <div><span>North</span><b>●</b></div>
+                    <div class="load-bar">
+                        <span style="width:70%"></span>
+                    </div>
+                </div>
+
+                <div class="station-item">
+                    <div><span>Central</span><b>●</b></div>
+                    <div class="load-bar">
+                        <span style="width:55%"></span>
+                    </div>
+                </div>
+
+                <div class="station-item">
+                    <div><span>South</span><b>●</b></div>
+                    <div class="load-bar">
+                        <span style="width:80%"></span>
+                    </div>
+                </div>
+
+                <div class="station-item">
+                    <div><span>East</span><b>●</b></div>
+                    <div class="load-bar">
+                        <span style="width:45%"></span>
+                    </div>
+                </div>
+
+                <div class="station-item">
+                    <div><span>West</span><b>●</b></div>
+                    <div class="load-bar">
+                        <span style="width:60%"></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="panel-divider"></div>
+
+            <h3 class="section-heading">SIMULATION CONTROLS</h3>
+
+            <button id="normal-btn"
+                    class="control-btn normal-btn">
+                Normal Operation
+            </button>
+
+            <button id="fault-btn"
+                    class="control-btn fault-btn">
+                ⚠ Simulate Line Failure
+            </button>
+
+            <button id="restore-btn"
+                    class="control-btn restore-btn">
+                ↻ Restore Network
+            </button>
+
+            <button id="guided-btn"
+                    class="control-btn guided-btn">
+                ▶ Guided Simulation
+            </button>
+
+        </aside>
+
+
+        <!-- CENTER NETWORK MAP -->
+        <section class="network-panel">
+
+            <div class="section-heading map-heading">
+
+                <div>
+                    <h3>REGIONAL POWER FLOW MAP</h3>
+                    <p>Live transmission network visualization</p>
+                </div>
+
+                <div class="map-legend">
+                    <span>🟢 Generator</span>
+                    <span>🔵 Substation</span>
+                    <span>🟠 Load</span>
+                    <span>🔴 Fault</span>
+                </div>
+
+            </div>
+
+
+            <div class="network-container">
+
+                <svg id="network-svg"
+                     viewBox="0 0 800 450"
+                     preserveAspectRatio="xMidYMid meet"
+                     role="img"
+                     aria-label="GridGuard power transmission network">
+
+                </svg>
+
+            </div>
+
+
+            <div class="map-footer">
+                <span id="grid-status">
+                    NORMAL OPERATION
+                </span>
+
+                <span>
+                    TRANSMISSION NETWORK MONITORING
+                </span>
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT PANEL -->
+        <aside class="side-panel right-panel">
+
+
+            <!-- OUTAGE DETECTION -->
+            <section class="outage-section">
+
+                <div class="section-heading">
+                    <h3>OUTAGE DETECTION</h3>
+                    <span class="live-label">LIVE</span>
+                </div>
+
+                <div id="event-log" class="event-log">
+
+                    <p class="normal-event">
+                        ✓ No active faults detected
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="panel-divider"></div>
+
+
+            <!-- DEMAND FORECAST -->
+            <section class="forecast-section">
+
+                <div class="section-heading">
+                    <h3>LIVE DEMAND FORECAST</h3>
+                    <span class="live-label">MW</span>
+                </div>
+
+                <div class="chart-container">
+
+                    <svg id="demand-chart"
+                         viewBox="0 0 300 150">
+
+                        <g class="chart-grid">
+                            <path d="M0 30 H300"/>
+                            <path d="M0 70 H300"/>
+                            <path d="M0 110 H300"/>
+                        </g>
+
+                        <path class="chart-line"
+                              d="M0 105 C25 90 35 120 60 95
+                              S95 60 120 75 S155 100 180 55
+                              S220 30 245 45 S275 20 300 25"/>
+
+                    </svg>
+
+                </div>
+
+            </section>
+
+
+            <div class="panel-divider"></div>
+
+
+            <!-- GENERATION MIX -->
+            <section class="generation-section">
+
+                <h3>GENERATION MIX</h3>
+
+                <div class="generation-content">
+
+                    <div class="donut-chart">
+                        <div>GEN</div>
+                    </div>
+
+                    <div class="generation-legend">
+
+                        <span>
+                            <i class="solar"></i> Solar
+                        </span>
+
+                        <span>
+                            <i class="hydro"></i> Hydro
+                        </span>
+
+                        <span>
+                            <i class="thermal"></i> Thermal
+                        </span>
+
+                        <span>
+                            <i class="wind"></i> Wind
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </aside>
+
+    </section>
+
+
+    <!-- BOTTOM FREQUENCY GRAPH -->
+    <section class="bottom-grid">
+
+        <article class="bottom-panel">
+
+            <div class="section-heading">
+
+                <div>
+                    <h3>
+                        GRID FREQUENCY STABILITY — 50 HZ REFERENCE
+                    </h3>
+
+                    <p>Frequency monitoring visualization</p>
+                </div>
+
+                <span class="live-label">LIVE</span>
+
+            </div>
+
+
+            <div class="frequency-chart">
+
+                <svg id="frequency-chart"
+                     viewBox="0 0 900 110"
+                     preserveAspectRatio="none">
+
+                    <path class="frequency-reference"
+                          d="M0 55 H900"/>
+
+                    <path id="frequency-wave"
+                          class="frequency-wave"
+                          d="M0 55 L20 45 L40 65 L60 40
+                          L80 58 L100 48 L120 70
+                          L140 43 L160 55 L180 45
+                          L200 63 L220 42 L240 57
+                          L260 47 L280 65 L300 44
+                          L320 55 L340 42 L360 61
+                          L380 47 L400 56 L420 44
+                          L440 65 L460 42 L480 56
+                          L500 45 L520 62 L540 43
+                          L560 57 L580 47 L600 63
+                          L620 42 L640 55 L660 45
+                          L680 62 L700 43 L720 57
+                          L740 45 L760 63 L780 42
+                          L800 55 L820 45 L840 60
+                          L860 43 L880 54 L900 48"/>
+
+                </svg>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <span>
+            GRIDGUARD POWER GRID MONITORING SYSTEM
+        </span>
+
+        <span>
+            Academic Project | Phase 3
+        </span>
+
+    </footer>
+
+</main>
+
+
+<!-- KEEP THIS SCRIPT REFERENCE -->
+<script src="simulation.js"></script>
+
+</body>
+</html>

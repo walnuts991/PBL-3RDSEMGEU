@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GridGuard | Power Network Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <h2>⚡ GridGuard</h2>
+            <p>POWER NETWORK INTELLIGENCE</p>
+        </div>
+
+        <p class="nav-heading">WORKSPACE</p>
+        <button class="nav active" data-page="overview">▦ <span>Overview</span></button>
+        <button class="nav" data-page="network">⌘ <span>Grid Network</span></button>
+        <button class="nav" data-page="shortest">↗ <span>Shortest Path</span></button>
+        <button class="nav" data-page="flow">⇢ <span>Maximum Flow</span></button>
+        <button class="nav" data-page="mst">⌁ <span>Minimum Spanning Tree</span></button>
+        <button class="nav" data-page="fault">◈ <span>Fault Tolerance</span></button>
+        <button class="nav" data-page="data-entry">＋ <span>Data Entry</span></button>
+        <div class="sidebar-bottom">
+            <div><span class="status-dot"></span> System Online</div>
+            <small>GridGuard Engineering Project</small>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <span class="muted">Workspace /</span>
+                <b id="page-title">Overview</b>
+            </div>
+            <div class="topbar-right">
+                <span class="demo"><span class="status-dot"></span> DEMO SIMULATION</span>
+            </div>
+        </header>
+
+        <!-- OVERVIEW -->
+        <section id="overview" class="page active">
+            <div class="welcome-row">
+                <div>
+                    <p class="eyebrow">GRID OPERATIONS / DASHBOARD</p>
+                    <h1>Network Overview</h1>
+                    <p class="muted">Monitor, analyze and simulate your electrical transmission network.</p>
+                </div>
+                <div class="system-status">
+                    <span class="status-dot"></span> All systems operational
+                </div>
+            </div>
+
+            <div class="notice">
+                <strong>DEMO ENVIRONMENT</strong>
+                <span>Displaying sample network data. Live C++ backend integration is pending.</span>
+            </div>
+
+            <div class="stats">
+         <article class="stat-card">
+    <small>AVAILABLE GENERATION</small>
+    <h2>200 MW</h2>
+    <p>Installed sample supply</p>
+    <span class="stat-icon">⚡</span>
+</article>
+
+<article class="stat-card">
+    <small>TOTAL DEMAND</small>
+    <h2>240 MW</h2>
+    <p>40 MW generation deficit</p>
+    <span class="stat-icon">◉</span>
+</article>
+                <article class="stat-card">
+                    <small>GENERATION</small>
+                    <h2>200 MW</h2>
+                    <p>Available supply</p>
+                    <span class="stat-icon">⚡</span>
+                </article>
+                <article class="stat-card">
+                    <small>TOTAL DEMAND</small>
+                    <h2>240 MW</h2>
+                    <p>Combined load</p>
+                    <span class="stat-icon">◉</span>
+                </article>
+            </div>
+
+            <div class="dashboard-grid">
+                <article class="card topology-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Live Grid Topology</h3>
+                            <p class="muted">Interactive sample network</p>
+                        </div>
+                        <span class="live-label"><span class="status-dot"></span> LIVE DEMO</span>
+                    </div>
+
+                    <div class="grid-map" id="overview-map">
+                        <div class="grid-line line-1" data-line="1"></div>
+                        <div class="grid-line line-2" data-line="2"></div>
+                        <div class="grid-line line-3" data-line="3"></div>
+                        <div class="grid-line line-4" data-line="4"></div>
+
+                        <button class="station generator" data-station="1">
+                            <strong>01</strong><small>North</small>
+                        </button>
+                        <button class="station load" data-station="2">
+                            <strong>02</strong><small>Central</small>
+                        </button>
+                        <button class="station load" data-station="3">
+                            <strong>03</strong><small>South</small>
+                        </button>
+                        <button class="station load" data-station="4">
+                            <strong>04</strong><small>East</small>
+                        </button>
+                    </div>
+
+                    <div class="map-legend">
+                        <span><i class="legend-dot blue"></i> Generator</span>
+                        <span><i class="legend-dot cyan"></i> Substation</span>
+                        <span><i class="legend-dot green"></i> Active line</span>
+                        <span><i class="legend-dot red"></i> Failed line</span>
+                    </div>
+                    <p class="interaction-hint" id="station-info">Click a substation to inspect it.</p>
+                </article>
+
+                <article class="card module-card">
+                    <h3>Project Modules</h3>
+                    <p class="muted">Your engineering toolkit</p>
+                    <button class="module-item" data-go="network">
+                        <span class="module-number">01</span>
+                        <span><strong>Graph Creation</strong><small>Network structure</small></span>
+                        <span class="module-arrow">↗</span>
+                    </button>
+                    <button class="module-item" data-go="mst">
+                        <span class="module-number">02</span>
+                        <span><strong>Minimum Spanning Tree</strong><small>Network optimization</small></span>
+                        <span class="module-arrow">↗</span>
+                    </button>
+                    <button class="module-item" data-go="fault">
+                        <span class="module-number">03</span>
+                        <span><strong>Fault Tolerance</strong><small>Reliability analysis</small></span>
+                        <span class="module-arrow">↗</span>
+                    </button>
+                    <button class="module-item" data-go="shortest">
+                        <span class="module-number">04</span>
+                        <span><strong>Path & Flow Analysis</strong><small>Dijkstra and Edmonds–Karp</small></span>
+                        <span class="module-arrow">↗</span>
+                    </button>
+                </article>
+            </div>
+
+            <article class="card activity-card">
+                <div class="card-heading">
+                    <div>
+                        <h3>Network Activity</h3>
+                        <p class="muted">Sample transmission capacity by line</p>
+                    </div>
+                </div>
+                <div class="capacity-bars">
+                    <div class="capacity-row"><span>Line 1</span><div class="bar-track"><div class="bar-fill" style="width:83%"></div></div><b>100 MW</b></div>
+                    <div class="capacity-row"><span>Line 2</span><div class="bar-track"><div class="bar-fill cyan-fill" style="width:100%"></div></div><b>120 MW</b></div>
+                    <div class="capacity-row"><span>Line 3</span><div class="bar-track"><div class="bar-fill purple-fill" style="width:67%"></div></div><b>80 MW</b></div>
+                    <div class="capacity-row"><span>Line 4</span><div class="bar-track"><div class="bar-fill green-fill" style="width:75%"></div></div><b>90 MW</b></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- NETWORK -->
+        <section id="network" class="page">
+            <p class="eyebrow">MODULE 1 / GRAPH MANAGEMENT</p>
+            <h1>Grid Network</h1>
+            <p class="muted">Explore substations and transmission connections.</p>
+
+            <div class="stats three-stats">
+                <article class="stat-card"><small>SUBSTATIONS</small><h2>04</h2><p>Registered nodes</p></article>
+                <article class="stat-card"><small>TOTAL LINES</small><h2>04</h2><p>Network edges</p></article>
+                <article class="stat-card"><small>NETWORK TYPE</small><h2 class="text-stat">Undirected</h2><p>Weighted graph</p></article>
+            </div>
+
+            <article class="card">
+                <div class="card-heading">
+                    <div><h3>Substation Register</h3><p class="muted">Select a substation to inspect it</p></div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Supply</th><th>Demand</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr><td>01</td><td>North</td><td>Generator</td><td>200 MW</td><td>0 MW</td><td><span class="table-status">● Active</span></td></tr>
+                            <tr><td>02</td><td>Central</td><td>Load</td><td>0 MW</td><td>100 MW</td><td><span class="table-status">● Active</span></td></tr>
+                            <tr><td>03</td><td>South</td><td>Load</td><td>0 MW</td><td>80 MW</td><td><span class="table-status">● Active</span></td></tr>
+                            <tr><td>04</td><td>East</td><td>Load</td><td>0 MW</td><td>60 MW</td><td><span class="table-status">● Active</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-heading"><div><h3>Transmission Lines</h3><p class="muted">Click a line to toggle its demo status</p></div></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Line</th><th>From</th><th>To</th><th>Distance</th><th>Capacity</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="line-table">
+                            <tr><td>01</td><td>North</td><td>Central</td><td>10 km</td><td>100 MW</td><td><span class="table-status line-status" data-status="1">● Active</span></td><td><button class="small-btn line-toggle" data-line="1">Switch OFF</button></td></tr>
+                            <tr><td>02</td><td>Central</td><td>South</td><td>15 km</td><td>120 MW</td><td><span class="table-status line-status" data-status="2">● Active</span></td><td><button class="small-btn line-toggle" data-line="2">Switch OFF</button></td></tr>
+                            <tr><td>03</td><td>North</td><td>South</td><td>20 km</td><td>80 MW</td><td><span class="table-status line-status" data-status="3">● Active</span></td><td><button class="small-btn line-toggle" data-line="3">Switch OFF</button></td></tr>
+                            <tr><td>04</td><td>South</td><td>East</td><td>8 km</td><td>90 MW</td><td><span class="table-status line-status" data-status="4">● Active</span></td><td><button class="small-btn line-toggle" data-line="4">Switch OFF</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <!-- SHORTEST PATH -->
+        <section id="shortest" class="page">
+            <p class="eyebrow">MODULE 4 / DIJKSTRA'S ALGORITHM</p>
+            <h1>Shortest Path Analysis</h1>
+            <p class="muted">Find the minimum-distance route between two substations.</p>
+
+            <article class="card control-card">
+                <h3>Route Configuration</h3>
+                <div class="control-row">
+                    <label>Source substation
+                        <select id="path-source">
+                            <option value="1">01 — North</option>
+                            <option value="2">02 — Central</option>
+                            <option value="3">03 — South</option>
+                            <option value="4">04 — East</option>
+                        </select>
+                    </label>
+                    <label>Destination substation
+                        <select id="path-destination">
+                            <option value="4">04 — East</option>
+                            <option value="1">01 — North</option>
+                            <option value="2">02 — Central</option>
+                            <option value="3">03 — South</option>
+                        </select>
+                    </label>
+                    <button class="primary-btn" id="calculate-path">Calculate Route ↗</button>
+                </div>
+            </article>
+
+            <article class="card result-card" id="path-result">
+                <span class="result-label">SAMPLE SHORTEST ROUTE</span>
+                <h2 id="path-route">North → South → East</h2>
+                <div class="big-result" id="path-distance">28.00 <span>km</span></div>
+                <p class="muted" id="path-message">Shortest route calculated using sample network distances.</p>
+            </article>
+        </section>
+
+        <!-- MAXIMUM FLOW -->
+        <section id="flow" class="page">
+            <p class="eyebrow">MODULE 4 / EDMONDS–KARP ALGORITHM</p>
+            <h1>Maximum Power Flow</h1>
+            <p class="muted">Analyze the maximum transferable power through the network.</p>
+
+            <article class="card control-card">
+                <h3>Flow Configuration</h3>
+                <div class="control-row">
+                    <label>Source
+                        <select id="flow-source">
+                            <option value="1">01 — North</option>
+                            <option value="2">02 — Central</option>
+                            <option value="3">03 — South</option>
+                            <option value="4">04 — East</option>
+                        </select>
+                    </label>
+                    <label>Destination
+                        <select id="flow-destination">
+                            <option value="4">04 — East</option>
+                            <option value="1">01 — North</option>
+                            <option value="2">02 — Central</option>
+                            <option value="3">03 — South</option>
+                        </select>
+                    </label>
+                    <button class="primary-btn" id="calculate-flow">Analyze Flow ⇢</button>
+                </div>
+            </article>
+
+            <article class="card result-card">
+                <span class="result-label">SAMPLE MAXIMUM FLOW</span>
+                <div class="big-result" id="flow-value">180 <span>MW</span></div>
+                <p class="muted" id="flow-message">Maximum transferable power in the tested sample run.</p>
+                <div class="cut-box">
+                    <h3>Minimum-Cut Transmission Lines</h3>
+                    <div id="cut-lines"><span class="chip">Line 1</span><span class="chip">Line 3</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- MST -->
+        <section id="mst" class="page">
+            <p class="eyebrow">MODULE 2 / PRIM & KRUSKAL</p>
+            <h1>Minimum Spanning Tree</h1>
+            <p class="muted">Compare two algorithms for minimum-cost network construction.</p>
+
+            <div class="stats two-stats">
+                <article class="stat-card"><small>KRUSKAL ALGORITHM</small><h2>350</h2><p>Total construction cost</p></article>
+                <article class="stat-card"><small>PRIM ALGORITHM</small><h2>350</h2><p>Total construction cost</p></article>
+            </div>
+
+            <article class="card">
+                <div class="card-heading">
+                    <div><h3>Algorithm Comparison</h3><p class="muted">Sample output from the tested C++ program</p></div>
+                    <span class="chip success-chip">Same total cost</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Selected Line</th><th>Connection</th><th>Construction Cost</th></tr></thead>
+                        <tbody>
+                            <tr><td>Line 4</td><td>South — East</td><td>80.00</td></tr>
+                            <tr><td>Line 1</td><td>North — Central</td><td>120.00</td></tr>
+                            <tr><td>Line 2</td><td>Central — South</td><td>150.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="primary-btn" id="show-mst">Show selected connections</button>
+                <p class="interaction-hint" id="mst-message">Press the button to highlight the selected connections.</p>
+            </article>
+        </section>
+
+        <!-- FAULT TOLERANCE -->
+        <section id="fault" class="page">
+            <p class="eyebrow">MODULE 3 / NETWORK RELIABILITY</p>
+            <h1>Fault Tolerance</h1>
+            <p class="muted">Identify critical connections and explore network failure scenarios.</p>
+
+            <div class="stats three-stats">
+                <article class="stat-card"><small>CRITICAL LINE</small><h2>04</h2><p>Bridge detected</p></article>
+                <article class="stat-card"><small>INITIAL BRIDGES</small><h2>01</h2><p>Before augmentation</p></article>
+                <article class="stat-card"><small>FINAL BRIDGES</small><h2>00</h2><p>After augmentation</p></article>
+            </div>
+
+            <article class="card fault-card">
+                <h3>Fault Simulation Center</h3>
+                <p class="muted">Choose a transmission line to simulate a failure.</p>
+                <div class="control-row">
+                    <label>Transmission line
+                        <select id="fault-line">
+                            <option value="1">Line 1 — North to Central</option>
+                            <option value="2">Line 2 — Central to South</option>
+                            <option value="3">Line 3 — North to South</option>
+                            <option value="4">Line 4 — South to East</option>
+                        </select>
+                    </label>
+                    <button class="danger-btn" id="simulate-fault">Simulate Failure ⚠</button>
+                    <button class="secondary-btn" id="restore-grid">Restore Network ↻</button>
+                </div>
+                <div class="simulation-output" id="fault-output">
+                    <span class="table-status">● Network stable</span>
+                    <p>Select a line and run a simulation to see the result.</p>
+                </div>
+            </article>
+
+            <article class="card">
+                <h3>Budget-Based Augmentation</h3>
+                <div class="augmentation-grid">
+                    <div><small>SELECTED ADDITIONAL LINK</small><h2>Line 5</h2><p>East → North</p></div>
+                    <div><small>CONSTRUCTION COST</small><h2>50.00</h2><p>Budget used</p></div>
+                    <div><small>REMAINING BUDGET</small><h2>50.00</h2><p>Available budget</p></div>
+                </div>
+                <p class="muted">Sample result: augmentation reduces the number of bridges from 1 to 0.</p>
+            </article>
+        </section>
+
+        <footer>GRIDGUARD · POWER NETWORK ANALYSIS · ACADEMIC PROJECT</footer>
+        
+<!-- DATA ENTRY PAGE -->
+<section id="data-entry" class="page">
+
+    <p class="eyebrow">MODULE 5 / NETWORK INPUT</p>
+    <h1>Data Entry</h1>
+    <p class="muted">
+        Add substations and transmission lines to create a custom power grid.
+    </p>
+
+    <!-- ADD SUBSTATION -->
+    <article class="card">
+        <h3>Add Substation</h3>
+        <p class="muted">Enter the details of a generator or load substation.</p>
+
+        <div class="control-row">
+            <label>Substation ID
+                <input type="number" id="station-id" placeholder="e.g. 5">
+            </label>
+
+            <label>Substation Name
+                <input type="text" id="station-name" placeholder="e.g. West">
+            </label>
+
+            <label>Substation Type
+                <select id="station-type">
+                    <option value="generator">Generator</option>
+                    <option value="load">Load</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="control-row">
+            <label>Supply (MW)
+                <input type="number" id="station-supply" value="0" min="0">
+            </label>
+
+            <label>Demand (MW)
+                <input type="number" id="station-demand" value="0" min="0">
+            </label>
+        </div>
+
+        <button class="primary-btn" id="add-station">
+            + Add Substation
+        </button>
+    </article>
+
+    <!-- ADD TRANSMISSION LINE -->
+    <article class="card">
+        <h3>Add Transmission Line</h3>
+        <p class="muted">Connect two existing substations.</p>
+
+        <div class="control-row">
+            <label>Line ID
+                <input type="number" id="line-id" placeholder="e.g. 5">
+            </label>
+
+            <label>From Substation ID
+                <input type="number" id="line-from" placeholder="e.g. 1">
+            </label>
+
+            <label>To Substation ID
+                <input type="number" id="line-to" placeholder="e.g. 4">
+            </label>
+        </div>
+
+        <div class="control-row">
+            <label>Distance (km)
+                <input type="number" id="line-distance" placeholder="e.g. 12" min="0.01" step="any">
+            </label>
+
+            <label>Terrain Factor
+                <input type="number" id="line-terrain" value="1" min="0.01" step="any">
+            </label>
+
+            <label>Capacity (MW)
+                <input type="number" id="line-capacity" placeholder="e.g. 100" min="0.01" step="any">
+            </label>
+        </div>
+
+        <button class="primary-btn" id="add-line">
+            + Add Transmission Line
+        </button>
+    </article>
+
+    <!-- CURRENT ENTRIES -->
+    <article class="card">
+        <h3>Current Network Entries</h3>
+        <p class="muted">Substations and transmission lines added to your network.</p>
+
+        <div id="entry-summary">
+            <p>No custom entries added yet.</p>
+        </div>
+
+        <button class="primary-btn" id="analyze-custom-grid">
+            Analyze Network ↗
+        </button>
+        <p class="interaction-hint" id="entry-message">
+            Add your network data and analyze it using the C++ backend.
+        </p>
+    </article>
+
+</section>
+<!-- END DATA ENTRY PAGE -->
+
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
