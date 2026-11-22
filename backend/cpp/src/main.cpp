@@ -1,11 +1,8 @@
 #include "Graph.h"
-<<<<<<< HEAD
-#include "../include/faulttolerance.h"
-=======
 #include "MST.h"
+#include "ShortestPath.h"
+#include "MaxFlow.h"
 #include "faulttolerance.h"
-
->>>>>>> a287298b80dbb29ca2923eead7a29575f3b61534
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -162,6 +159,31 @@ int main() {
 
 
     // ========================================
+    // MODULE 4: SHORTEST PATH AND MAXIMUM FLOW
+    // ========================================
+
+    cout << "\n=== MODULE 4: SHORTEST PATH AND MAXIMUM FLOW ===\n";
+
+    ShortestPathResult shortest = ShortestPath::dijkstra(grid, 1, 4);
+    if (shortest.pathFound) {
+        cout << "Shortest route from 1 to 4: ";
+        for (size_t i = 0; i < shortest.path.size(); ++i) {
+            if (i) cout << " -> ";
+            cout << shortest.path[i];
+        }
+        cout << " | Total distance: " << shortest.totalDistance << " km\n";
+    } else {
+        cout << "No route exists from 1 to 4.\n";
+    }
+
+    MaxFlowResult flow = MaxFlow::edmondsKarp(grid);
+    cout << "Maximum transferable power: " << flow.maximumFlowMW << " MW\n";
+    cout << "Minimum-cut transmission line IDs: ";
+    if (flow.bottleneckLineIds.empty()) cout << "None";
+    for (int id : flow.bottleneckLineIds) cout << id << ' ';
+    cout << '\n';
+
+    // ========================================
     // MODULE 3: FAULT TOLERANCE
     // ========================================
 
@@ -284,6 +306,7 @@ int main() {
     cout << "Module 1: Graph Creation Executed\n";
     cout << "Module 2: Kruskal and Prim Executed\n";
     cout << "Module 3: Fault Tolerance Executed\n";
+    cout << "Module 4: Shortest Path and Maximum Flow Executed\n";
 
     cout << "\nGridGuard execution completed.\n";
 

@@ -90,8 +90,8 @@ MaxFlowResult MaxFlow::edmondsKarp(const Graph& graph) {
 
         const auto& station = graph.getSubstations()[i];
 
-        double supply = station.getGenerationMW();
-        double demand = station.getLoadDemand();
+        double supply = station.getSupplyMW();
+        double demand = station.getDemandMW();
 
         if (!std::isfinite(supply) ||
             !std::isfinite(demand) ||
