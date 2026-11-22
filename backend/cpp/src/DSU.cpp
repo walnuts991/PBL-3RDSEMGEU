@@ -7,7 +7,7 @@ DSU::DSU(int n)
     : parent(n < 0 ? 0 : n),
       rankValue(n < 0 ? 0 : n, 0),
       componentCount(n < 0 ? 0 : n) {
-
+    // Validate the DSU size.
     if (n < 0) {
         throw std::invalid_argument("DSU size cannot be negative");
     }
@@ -29,7 +29,7 @@ int DSU::find(int vertex) {
 
     return parent[vertex];
 }
-
+// Check whether two vertices belong to the same set.
 bool DSU::unite(int a, int b) {
 
     int rootA = find(a);
@@ -59,6 +59,8 @@ bool DSU::unite(int a, int b) {
 bool DSU::connected(int a, int b) {
     return find(a) == find(b);
 }
+
+// Return the number of separate components.
 
 int DSU::getComponentCount() const {
     return componentCount;
